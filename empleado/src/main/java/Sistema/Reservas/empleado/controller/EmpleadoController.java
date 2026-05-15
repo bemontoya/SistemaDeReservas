@@ -1,7 +1,6 @@
-//Es la cara externa del microservicio. Recibe las peticiones de Postman y entrega respuestas.
-
 package Sistema.Reservas.empleado.controller;
 
+import Sistema.Reservas.empleado.dto.EmpleadoDTO;
 import Sistema.Reservas.empleado.model.Empleado;
 import Sistema.Reservas.empleado.service.EmpleadoService;
 import jakarta.validation.Valid;
@@ -12,38 +11,42 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // Define que esta clase es un controlador API REST
-@RequestMapping("/api/empleados") // Ruta base para todos los endpoints de este servicio
+@RestController
+@RequestMapping("/api/empleados")
 public class EmpleadoController {
 
-    @Autowired // Inyecta el servicio de empleados
+    @Autowired
     private EmpleadoService empleadoService;
 
-    // GET: http://localhost;8086/api/empleados
+    // El GET puede seguir retornando la entidad completa para ver el historial
     @GetMapping
-    public List<Empleado> listar(){
+    public List<Empleado> listar() {
         return empleadoService.obtenerTodos();
     }
 
-    // GET por ID: http://localhost:8086/api/empleados/1
     @GetMapping("/{id}")
     public ResponseEntity<Empleado> obtenerPorId(@PathVariable Long id) {
         try {
-            // Intenta buscar el empleado y responde con un 200 OK
             return ResponseEntity.ok(empleadoService.obtenerPorId(id));
         } catch (RuntimeException e) {
-            // Si falla, captura la excepción y responde con un 404 Not Found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-    // POST: http://localhost:8086/api/empleados
+
     @PostMapping
-    public ResponseEntity<Empleado> crear(@Valid @RequestBody Empleado empleado) {
-        // @Valid: Ejecuta las validaciones del modelo (@NotBlank, @Email)
-        // @RequestBody: Convierte el JSON de Postman en un objeto Java
-        Empleado nuevoEmpleado = empleadoService.crearEmpleado(empleado);
-        // Responde con un 201 Created y el objeto creado
+    public ResponseEntity<Empleado> crear(@Valid @RequestBody EmpleadoDTO empleadoDTO) {
+
+
+        Empleado empleadoEntidad = new Empleado();
+        empleadoEntidad.setNombre(empleadoDTO.getNombre());
+        empleadoEntidad.setApellido(empleadoDTO.getApellido());
+        empleadoEntidad.setCargo(empleadoDTO.getCargo());
+        empleadoEntidad.setEmail(empleadoDTO.getEmail());
+
+        // Guardamos la entidad procesada a través del servicio
+        Empleado nuevoEmpleado = empleadoService.crearEmpleado(empleadoEntidad);
+
         return new ResponseEntity<>(nuevoEmpleado, HttpStatus.CREATED);
     }
 }
