@@ -1,5 +1,6 @@
 package Sistema.Reservas.mesa.controller;
 
+import Sistema.Reservas.mesa.dto.MesaDTO;
 import Sistema.Reservas.mesa.model.Mesa;
 import Sistema.Reservas.mesa.service.MesaService;
 import jakarta.validation.Valid;
@@ -17,25 +18,32 @@ public class MesaController {
     @Autowired
     private MesaService mesaService;
 
-    // GET /api/mesas (Muestra todas las mesas)
     @GetMapping
     public List<Mesa> listarTodas() {
         return mesaService.obtenerTodas();
     }
 
-    // GET /api/mesas/estado/libre (Muestra solo las mesas libres)
     @GetMapping("/estado/{estado}")
     public List<Mesa> listarPorEstado(@PathVariable String estado) {
         return mesaService.obtenerPorEstado(estado);
     }
 
-    // POST /api/mesas (Crea una mesa)
+
     @PostMapping
-    public ResponseEntity<Mesa> crear(@Valid @RequestBody Mesa mesa) {
-        return new ResponseEntity<>(mesaService.crearMesa(mesa), HttpStatus.CREATED);
+    public ResponseEntity<Mesa> crear(@Valid @RequestBody MesaDTO mesaDTO) {
+
+
+        Mesa mesaEntidad = new Mesa();
+        mesaEntidad.setNumeroMesa(mesaDTO.getNumeroMesa());
+        mesaEntidad.setCapacidad(mesaDTO.getCapacity());
+        // El estado 'LIBRE' se asigna por defecto en el modelo o la base de datos
+
+
+        Mesa nuevaMesa = mesaService.crearMesa(mesaEntidad);
+
+        return new ResponseEntity<>(nuevaMesa, HttpStatus.CREATED);
     }
 
-    // PATCH /api/mesas/1/estado?nuevoEstado=ocupada (Cambia el estado de la mesa)
     @PatchMapping("/{id}/estado")
     public ResponseEntity<?> actualizarEstado(@PathVariable Long id, @RequestParam String nuevoEstado) {
         try {
