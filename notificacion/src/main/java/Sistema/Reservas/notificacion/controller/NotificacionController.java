@@ -1,5 +1,6 @@
 package Sistema.Reservas.notificacion.controller;
 
+import Sistema.Reservas.notificacion.dto.NotificacionDTO;
 import Sistema.Reservas.notificacion.model.Notificacion;
 import Sistema.Reservas.notificacion.service.NotificacionService;
 import jakarta.validation.Valid;
@@ -22,10 +23,19 @@ public class NotificacionController {
         return notificacionService.obtenerTodas();
     }
 
+
     @PostMapping
-    public ResponseEntity<Notificacion> crear(@Valid @RequestBody Notificacion notificacion) {
-        // Al hacer el POST, simulamos que se dispara el envío
-        Notificacion nuevaNotificacion = notificacionService.enviarNotificacion(notificacion);
+    public ResponseEntity<Notificacion> crear(@Valid @RequestBody NotificacionDTO notificacionDTO) {
+
+
+        Notificacion notificacionEntidad = new Notificacion();
+        notificacionEntidad.setDestinatario(notificacionDTO.getDestinatario());
+        notificacionEntidad.setMensaje(notificacionDTO.getMensaje());
+        notificacionEntidad.setTipo(notificacionDTO.getTipo());
+
+
+        Notificacion nuevaNotificacion = notificacionService.enviarNotificacion(notificacionEntidad);
+
         return new ResponseEntity<>(nuevaNotificacion, HttpStatus.CREATED);
     }
 }
