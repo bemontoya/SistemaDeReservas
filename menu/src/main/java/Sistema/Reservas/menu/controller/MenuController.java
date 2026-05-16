@@ -1,5 +1,6 @@
 package Sistema.Reservas.menu.controller;
 
+import Sistema.Reservas.menu.dto.MenuDTO;
 import Sistema.Reservas.menu.model.Menu;
 import Sistema.Reservas.menu.service.MenuService;
 import jakarta.validation.Valid;
@@ -17,27 +18,27 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+
     @GetMapping
-    public List<Menu> listarMenu() {
+    public List<Menu> listarTodo() {
         return menuService.obtenerTodos();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Menu> obtenerPorId(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(menuService.obtenerPorId(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/categoria/{categoria}")
-    public List<Menu> listarPorCategoria(@PathVariable String categoria) {
-        return menuService.obtenerPorCategoria(categoria);
-    }
 
     @PostMapping
-    public ResponseEntity<Menu> crear(@Valid @RequestBody Menu menu) {
-        return new ResponseEntity<>(menuService.crearPlato(menu), HttpStatus.CREATED);
+    public ResponseEntity<Menu> crear(@Valid @RequestBody MenuDTO menuDTO) {
+
+
+        Menu menuEntidad = new Menu();
+        menuEntidad.setNombre(menuDTO.getNombre());
+        menuEntidad.setDescripcion(menuDTO.getDescripcion());
+        menuEntidad.setPrecio(menuDTO.getPrecio());
+        menuEntidad.setCategoria(menuDTO.getCategoria());
+        menuEntidad.setDisponible(menuDTO.getDisponible());
+
+
+        Menu nuevoPlato = menuService.crearPlato(menuEntidad);
+
+        return new ResponseEntity<>(nuevoPlato, HttpStatus.CREATED);
     }
 }
