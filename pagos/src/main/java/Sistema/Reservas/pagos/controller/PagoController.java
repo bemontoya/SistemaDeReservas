@@ -1,5 +1,6 @@
 package Sistema.Reservas.pagos.controller;
 
+import Sistema.Reservas.pagos.dto.PagoDTO;
 import Sistema.Reservas.pagos.model.Pago;
 import Sistema.Reservas.pagos.service.PagoService;
 import jakarta.validation.Valid;
@@ -18,26 +19,34 @@ public class PagoController {
     private PagoService pagoService;
 
     @GetMapping
-    public List<Pago> listar(){
+    public List<Pago> listar() {
         return pagoService.obtenerTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pago> buscarPorId(@PathVariable Long id){
-        try{
+    public ResponseEntity<Pago> buscarPorId(@PathVariable Long id) {
+        try {
             return ResponseEntity.ok(pagoService.obtenerPorId(id));
-
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
+
     @PostMapping
-    public ResponseEntity<?> crear(@Valid @RequestBody Pago pago){
+    public ResponseEntity<?> crear(@Valid @RequestBody PagoDTO pagoDTO) {
         try {
-            return new ResponseEntity<>(pagoService.procesarPago(pago), HttpStatus.CREATED);
-        } catch (RuntimeException e){
-            // Si el pedido ya estaba pagado, retorna un mensaje de error
+            Pago pagoEntidad = new Pago();
+            pagoEntidad.setPedidoId(pagoDTO.getPedidoId());
+            pagoEntidad.setMonto(pagoDTO.getMonto());
+            pagoEntidad.setMetodoPago(pagoDTO.getMetodoPago());
+
+            // Enviamos la entidad al servicio para validar negocio y guardar
+            Pago nuevoPago = pagoService.procesarPago(pagoEntidad);
+            return new ResponseEntity<>(nuevoPago, HttpStatus.CREATED);
+
+        } catch (RuntimeException e) {
+            // Si el pedido ya estaba pagado, retorna el mensaje de error de negocio
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
