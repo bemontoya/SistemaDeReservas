@@ -15,27 +15,13 @@ public class ReportesService {
     @Autowired
     private ReportesRepository reportesRepository;
 
-    public List<Reportes> obtenerTodos(){
-        log.info("Accediendo al historial de reportes generados");
+    public List<Reportes> obtenerTodos() {
+        log.info("Consultando el historial completo de reportes");
         return reportesRepository.findAll();
     }
 
-    public List <Reportes> obtenerPorTipo(String tipo){
-        log.info("Buscando reportes de tipo: {}", tipo);
-        return reportesRepository.findByTipo(tipo);
-    }
-
-    public Reportes crearReporte(Reportes reporte){
-        log.info("Generando nuevo reporte tipo: {} por el usuario: {}",
-                reporte.getTipo(), reporte.getGeneradoPor());
+    public Reportes guardarReporte(Reportes reporte) {
+        log.info("Guardando en el historial el reporte: {} [Tipo: {}]", reporte.getNombre(), reporte.getTipo());
         return reportesRepository.save(reporte);
-    }
-
-    public Reportes obtenerPorId(Long id){
-        return reportesRepository.findById(id)
-                .orElseThrow(() ->  {
-                    log.error("No se encontró el reporte con ID: {}", id);
-                    return new RuntimeException("Reporte no encontrado");
-                });
     }
 }

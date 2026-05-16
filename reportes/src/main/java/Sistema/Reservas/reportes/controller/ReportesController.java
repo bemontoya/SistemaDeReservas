@@ -1,5 +1,6 @@
 package Sistema.Reservas.reportes.controller;
 
+import Sistema.Reservas.reportes.dto.ReportesDTO;
 import Sistema.Reservas.reportes.model.Reportes;
 import Sistema.Reservas.reportes.Service.ReportesService;
 import jakarta.validation.Valid;
@@ -18,18 +19,21 @@ public class ReportesController {
     private ReportesService reportesService;
 
     @GetMapping
-    public ResponseEntity<List<Reportes>> listarReportes(){
-        return ResponseEntity.ok(reportesService.obtenerTodos());
+    public List<Reportes> listarHistorial() {
+        return reportesService.obtenerTodos();
     }
 
     @PostMapping
-    public ResponseEntity<Reportes> generarReporte(@Valid @RequestBody Reportes reporte){
-        Reportes nuevoReporte = reportesService.crearReporte(reporte);
-        return new ResponseEntity<>(nuevoReporte, HttpStatus.CREATED);
-    }
+    public ResponseEntity<Reportes> registrarReporte(@Valid @RequestBody ReportesDTO reportesDTO) {
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Reportes> buscarPorId(@PathVariable Long id){
-        return ResponseEntity.ok(reportesService.obtenerPorId(id));
+        Reportes reporteEntidad = new Reportes();
+        reporteEntidad.setNombre(reportesDTO.getNombre());
+        reporteEntidad.setTipo(reportesDTO.getTipo());
+        reporteEntidad.setContenido(reportesDTO.getContenido());
+        reporteEntidad.setGeneradoPor(reportesDTO.getGeneradoPor());
+
+        Reportes nuevoReporte = reportesService.guardarReporte(reporteEntidad);
+
+        return new ResponseEntity<>(nuevoReporte, HttpStatus.CREATED);
     }
 }
