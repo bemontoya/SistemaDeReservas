@@ -1,5 +1,6 @@
 package Sistema.Reservas.inventario.controller;
 
+import Sistema.Reservas.inventario.dto.InventarioDTO;
 import Sistema.Reservas.inventario.model.Inventario;
 import Sistema.Reservas.inventario.service.InventarioService;
 import jakarta.validation.Valid;
@@ -27,13 +28,24 @@ public class InventarioController {
         return inventarioService.obtenerCriticos();
     }
 
+
     @PostMapping
-    public ResponseEntity<Inventario> crear(@Valid @RequestBody Inventario inventario) {
-        return new ResponseEntity<>(inventarioService.crearInsumo(inventario), HttpStatus.CREATED);
+    public ResponseEntity<Inventario> crear(@Valid @RequestBody InventarioDTO inventarioDTO) {
+
+        // Se pasan los datos del DTO a la entidad de la base de datos
+        Inventario inventarioEntidad = new Inventario();
+        inventarioEntidad.setNombreIngrediente(inventarioDTO.getNombreIngrediente());
+        inventarioEntidad.setCantidadActual(inventarioDTO.getCantidadActual());
+        inventarioEntidad.setStockMinimo(inventarioDTO.getStockMinimo());
+        inventarioEntidad.setUnidadMedida(inventarioDTO.getUnidadMedida());
+
+
+        Inventario nuevoInsumo = inventarioService.crearInsumo(inventarioEntidad);
+
+        return new ResponseEntity<>(nuevoInsumo, HttpStatus.CREATED);
     }
 
 
-    // Patch /api/inventario/1/descontar?cantidad=5
     @PatchMapping("/{id}/descontar")
     public ResponseEntity<?> descontar(@PathVariable Long id, @RequestParam Integer cantidad) {
         try {
