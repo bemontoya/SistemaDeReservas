@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservas")
-@Data // Genera getters y setters automáticamente con Lombok
+@Data
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,17 @@ public class Reserva {
     @Future(message = "La fecha de reserva debe ser en el futuro")
     private LocalDateTime fechaReserva;
 
+    @NotNull(message = "La cantidad de personas es obligatoria")
+    @Min(value = 1, message = "La reserva debe ser al mennos para 1 persona")
+    private Integer cantidadPersonas;
+
     @NotBlank(message = "El estado no puede estar vacío")
     private String estado; // Si está "CONFIRMADA", "PENDIENTE"
+
+    @PrePersist
+    protected void onCreate(){
+        if (this.estado == null){
+            this.estado = "CONFIRMADA";
+        }
+    }
 }

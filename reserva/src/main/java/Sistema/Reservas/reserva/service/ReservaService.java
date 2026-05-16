@@ -16,7 +16,7 @@ public class ReservaService {
     @Autowired
     private ReservaRepository reservaRepository;
 
-    public List<Reserva> listarTodas(){
+    public List<Reserva> obtenerTodas(){
         log.info("Consultando todas las reservas....");
         return reservaRepository.findAll();
     }
@@ -30,11 +30,23 @@ public class ReservaService {
         return reservaRepository.save(reserva);
     }
 
-    public Reserva buscarPorId(Long id){
+    public Reserva obtenerPorId(Long id){
         return reservaRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("Reserva con ID {} no encontrada", id);
                     return new RuntimeException("Reserva no encontrada");
                 });
+    }
+
+    public Reserva crearReserva(Reserva nuevaReserva){
+        log.info("Iniciando proceso de creaciónn para una nueva reserva");
+
+        if (nuevaReserva.getEstado() == null) {
+            nuevaReserva.setEstado("COFIRMADA");
+        }
+        Reserva reservaGuardada = reservaRepository.save(nuevaReserva);
+        log.info("Reserva creada exitosamente con ID: {}", reservaGuardada.getId());
+
+        return reservaGuardada;
     }
 }

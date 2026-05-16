@@ -1,5 +1,6 @@
 package Sistema.Reservas.reserva.controller;
 
+import Sistema.Reservas.reserva.dto.ReservaDTO;
 import Sistema.Reservas.reserva.model.Reserva;
 import Sistema.Reservas.reserva.service.ReservaService;
 import jakarta.validation.Valid;
@@ -18,18 +19,31 @@ public class ReservaController {
     private ReservaService reservaService;
 
     @GetMapping
-    public ResponseEntity<List<Reserva>> obtenerTodas(){
-        return ResponseEntity.ok(reservaService.listarTodas());
-    }
-
-    @PostMapping
-    public ResponseEntity<Reserva> crear(@Valid @RequestBody Reserva reserva){
-        Reserva nuevaReserva = reservaService.guardar(reserva);
-        return new ResponseEntity<>(nuevaReserva, HttpStatus.CREATED);
+    public List<Reserva> listarTodas() {
+        return reservaService.obtenerTodas();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Reserva> obtenerPorId(@PathVariable Long id){
-        return ResponseEntity.ok(reservaService.buscarPorId(id));
+    public ResponseEntity<Reserva> obtenerPorId(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(reservaService.obtenerPorId(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Reserva> crear(@Valid @RequestBody ReservaDTO reservaDTO) {
+
+        Reserva reservaEntidad = new Reserva();
+        reservaEntidad.setClienteId(reservaDTO.getClienteId());
+        reservaEntidad.setMesaId(reservaDTO.getMesaId());
+        reservaEntidad.setFechaReserva(reservaDTO.getFechaReserva());
+        reservaEntidad.setCantidadPersonas(reservaDTO.getCantidadPersonas());
+
+        Reserva nuevaReserva = reservaService.crearReserva(reservaEntidad);
+
+        return new ResponseEntity<>(nuevaReserva, HttpStatus.CREATED);
     }
 }
