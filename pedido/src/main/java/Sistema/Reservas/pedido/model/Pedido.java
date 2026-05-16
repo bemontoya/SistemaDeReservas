@@ -19,6 +19,9 @@ public class Pedido {
     // Relacion con reserva (Para saber que mesa viene el pedido)
     private Long reservaId;
 
+    @NotBlank(message = "El detalle del pedido es obligatorio")
+    private String detalle;
+
     //Fecha y hora en la que se tomó el pedido
     private LocalDateTime fechaPedido;
 

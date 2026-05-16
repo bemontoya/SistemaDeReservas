@@ -1,5 +1,6 @@
 package Sistema.Reservas.pedido.controller;
 
+import Sistema.Reservas.pedido.dto.PedidoDTO;
 import Sistema.Reservas.pedido.model.Pedido;
 import Sistema.Reservas.pedido.service.PedidoService;
 import jakarta.validation.Valid;
@@ -18,17 +19,31 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @GetMapping
-    public ResponseEntity<List<Pedido>> listar() {
-        return ResponseEntity.ok(pedidoService.obtenerTodos());
-    }
-
-    @PostMapping
-    public ResponseEntity<Pedido> guardar(@Valid @RequestBody Pedido pedido) {
-        return new ResponseEntity<>(pedidoService.crearPedido(pedido), HttpStatus.CREATED);
+    public List<Pedido> listarTodos() {
+        return pedidoService.obtenerTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pedido> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(pedidoService.obtenerPorId(id));
+    public ResponseEntity<Pedido> obtenerPorId(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(pedidoService.obtenerPorId(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Pedido> crear(@Valid @RequestBody PedidoDTO pedidoDTO) {
+
+        Pedido pedidoEntidad = new Pedido();
+        pedidoEntidad.setClienteId(pedidoDTO.getClienteId());
+        pedidoEntidad.setReservaId(pedidoDTO.getReservaId());
+        pedidoEntidad.setDetalle(pedidoDTO.getDetalle());
+
+
+        Pedido nuevoPedido = pedidoService.crearPedido(pedidoEntidad);
+
+        return new ResponseEntity<>(nuevoPedido, HttpStatus.CREATED);
     }
 }
