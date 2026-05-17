@@ -1,8 +1,9 @@
-CREATE TABLE pedidos(
+CREATE TABLE pedidos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     cliente_id BIGINT NOT NULL,
     reserva_id BIGINT,
-    fecha_pedido DATETIME,
-    total DOUBLE,
-    estado VARCHAR(50) NOT NULL
+    detalle TEXT NOT NULL,
+    fecha_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total DOUBLE NOT NULL DEFAULT 0.0,
+    estado VARCHAR(50) NOT NULL DEFAULT 'EN_PREPARACION'
 );
