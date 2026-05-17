@@ -1,4 +1,9 @@
-FROM ubuntu:latest
-LABEL authors="benja"
+FROM eclipse-temurin:17-jdk-alpine
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /app
+
+COPY mesa/target/mesa-0.0.1-SNAPSHOT.jar app.jar
+
+EXPOSE 8083
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

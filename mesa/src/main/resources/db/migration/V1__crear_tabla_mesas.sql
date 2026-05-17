@@ -1,0 +1,6 @@
+CREATE TABLE mesas (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    numero_mesa INT NOT NULL UNIQUE,
+    capacidad INT NOT NULL,
+    estado VARCHAR(255) NOT NULL DEFAULT 'LIBRE'
+);
