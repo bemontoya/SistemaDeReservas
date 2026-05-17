@@ -1,8 +1,8 @@
-CREATE TABLE reportes(
+CREATE TABLE reportes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     tipo VARCHAR(100) NOT NULL,
-    fecha_generacion DATETIME NOT NULL,
+    fecha_generacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     contenido TEXT,
-    generado_por VARCHAR(100) NOT NULL
+    generado_por VARCHAR(150) NOT NULL
 );
