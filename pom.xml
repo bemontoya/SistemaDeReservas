@@ -22,12 +22,20 @@
         <module>reportes</module>
         <module>cliente</module>
         <module>menu</module>
-
+        <module>empleado</module>
+        <module>pagos</module>
+        <module>notificacion</module>
+        <module>inventario</module>
+        <module>mesa</module>
     </modules>
 
     <properties>
         <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <spring-cloud.version>2023.0.0</spring-cloud.version>
+        <lombok.version>1.18.30</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -46,6 +54,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

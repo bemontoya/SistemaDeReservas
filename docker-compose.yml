@@ -1,0 +1,244 @@
+services:
+  restaurante-db:
+    image: mysql:8.0
+    container_name: mysql_restaurante_container
+    environment:
+      MYSQL_ROOT_PASSWORD: C4dpeafg**
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_restaurante_data:/var/lib/mysql
+    networks:
+      - restaurante-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pC4dpeafg**"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  reserva-app:
+    build:
+      context: .
+      dockerfile: reserva/Dockerfile
+    container_name: reserva_backend
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/reserva_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/reserva_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8081
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  pedido-app:
+    build:
+      context: .
+      dockerfile: pedido/Dockerfile
+    container_name: pedido_backend
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/pedido_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/pedido_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8082
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  mesa-app:
+    build:
+      context: .
+      dockerfile: mesa/Dockerfile
+    container_name: mesa_backend
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/mesa_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/mesa_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8083
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  clientes-app:
+    build:
+      context: .
+      dockerfile: cliente/Dockerfile
+    container_name: clientes_backend
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/clientes_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/clientes_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8084
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  menu-app:
+    build:
+      context: .
+      dockerfile: menu/Dockerfile
+    container_name: menu_backend
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/menu_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/menu_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8085
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  empleados-app:
+    build:
+      context: .
+      dockerfile: empleado/Dockerfile
+    container_name: empleados_backend
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/empleados_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/empleados_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8086
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  inventario-app:
+    build:
+      context: .
+      dockerfile: inventario/Dockerfile
+    container_name: inventario_backend
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/inventario_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/inventario_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8087
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  notificacion-app:
+    build:
+      context: .
+      dockerfile: notificacion/Dockerfile
+    container_name: notificacion_backend
+    ports:
+      - "8088:8088"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/notificacion_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/notificacion_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8088
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  pagos-app:
+    build:
+      context: .
+      dockerfile: pagos/Dockerfile
+    container_name: pagos_backend
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/pago_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/pago_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8089
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+  reportes-app:
+    build:
+      context: .
+      dockerfile: reportes/Dockerfile
+    container_name: reportes_backend
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://restaurante-db:3306/reportes_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=C4dpeafg**
+      - SPRING_FLYWAY_URL=jdbc:mysql://restaurante-db:3306/reportes_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_FLYWAY_USER=root
+      - SPRING_FLYWAY_PASSWORD=C4dpeafg**
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8090
+    depends_on:
+      restaurante-db:
+        condition: service_healthy
+    networks:
+      - restaurante-network
+
+networks:
+  restaurante-network:
+    driver: bridge
+
+volumes:
+  mysql_restaurante_data:
