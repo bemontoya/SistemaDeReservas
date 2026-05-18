@@ -17,7 +17,7 @@ El proyecto utiliza **Spring Boot 3** para el desarrollo del backend, **MySQL 8.
 
 El sistema está compuesto por **10 contenedores en ejecución** intercomunicados a través de la red virtual `restaurante-network`:
 
-### 1. Base de Datos Centralizada (`restaurante-db` | Port: 3306)
+### 1. Base de Datos Centralizada (`restaurante-db` | Port: 3307)
 * Motor MySQL 8.0 que aloja de forma aislada e independiente las bases de datos de cada servicio: `cliente_db`, `empleado_db`, `inventario_db`, `menu_db`, `mesa_db`, `notificaciones_db`, `pagos_db`, `pedido_db`, `reportes_db` y `reserva_db`.
 
 ### 2. Microservicio de Clientes (`clientes-app` | Port: 8084)
