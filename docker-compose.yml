@@ -5,7 +5,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: C4dpeafg**
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_restaurante_data:/var/lib/mysql
     networks:
