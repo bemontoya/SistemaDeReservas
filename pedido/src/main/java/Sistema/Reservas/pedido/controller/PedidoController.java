@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -32,7 +31,6 @@ public class PedidoController {
         }
     }
 
-
     @PostMapping
     public ResponseEntity<Pedido> crear(@Valid @RequestBody PedidoDTO pedidoDTO) {
 
@@ -41,6 +39,10 @@ public class PedidoController {
         pedidoEntidad.setReservaId(pedidoDTO.getReservaId());
         pedidoEntidad.setDetalle(pedidoDTO.getDetalle());
 
+        // 👇 SOLUCIÓN: Ahora calza perfectamente con el tipo Double de tu modelo
+        pedidoEntidad.setTotal(0.0);
+        pedidoEntidad.setEstado("PENDIENTE");
+        pedidoEntidad.setFechaPedido(java.time.LocalDateTime.now());
 
         Pedido nuevoPedido = pedidoService.crearPedido(pedidoEntidad);
 
