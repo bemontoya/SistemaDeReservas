@@ -84,8 +84,11 @@ Gracias a la dockerización avanzada y la automatización de Flyway, el sistema 
 En mysql workbrench crear un nueva conexión con los siguientes datos:
 
 Hostname: localhost
-Port: 3307 
+
+Port: 3307
+
 Username: root
+
 Password: C4dpeafg**
 
 Abra una terminal (se recomienda PowerShell en Windows o Bash en Linux/macOS) en la **raíz principal del proyecto** y ejecute la siguiente secuencia de comandos:
