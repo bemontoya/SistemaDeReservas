@@ -99,5 +99,4 @@ Abra una terminal (se recomienda PowerShell en Windows o Bash en Linux/macOS) en
 
 # 2. Construir las imágenes optimizadas de Docker y levantar los 10 contenedores en segundo plano
 docker compose up --build -d
-   mvn clean package -DskipTests
 
