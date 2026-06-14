@@ -3,6 +3,10 @@ package Sistema.Reservas.cliente.controller;
 import Sistema.Reservas.cliente.dto.ClienteDTO;
 import Sistema.Reservas.cliente.model.Cliente;
 import Sistema.Reservas.cliente.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,79 +17,74 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/clientes")
+@Tag(name = "Cliente Controller", description = "API para la gestión completa de clientes en el sistema de reservas")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    // GET para listar todos los clientes existentes
     @GetMapping
+    @Operation(summary = "Listar todos los clientes", description = "Retorna una lista con todos los clientes registrados en la base de datos")
     public List<Cliente> listarTodos() {
         return clienteService.obtenerTodos();
     }
 
-
-    // Método GET para conseguir un cliente por id
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener un cliente por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cliente encontrado con éxito"),
+            @ApiResponse(responseCode = "404", description = "El cliente con el ID proporcionado no existe")
+    })
     public ResponseEntity<Cliente> obtenerPorId(@PathVariable Long id) {
-        Cliente  cliente = clienteService.obtenerPorId(id);
+        Cliente cliente = clienteService.obtenerPorId(id);
         return ResponseEntity.ok(cliente);
     }
 
-
-    // Método POST para crear el cliente
     @PostMapping
+    @Operation(summary = "Crear un nuevo cliente", description = "Registra un cliente validando el formato del teléfono chileno y que el email no esté duplicado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cliente creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos (Formatos incorrectos o campos vacíos)")
+    })
     public ResponseEntity<Cliente> crear(@Valid @RequestBody ClienteDTO clienteDTO) {
-
-        // Se pasan los datos del DTO a una Entidad real antes de guardarla
         Cliente clienteEntidad = new Cliente();
         clienteEntidad.setNombre(clienteDTO.getNombre());
         clienteEntidad.setApellido(clienteDTO.getApellido());
         clienteEntidad.setEmail(clienteDTO.getEmail());
         clienteEntidad.setTelefono(clienteDTO.getTelefono());
 
-        // Guardamos la entidad usando tu servicio de siempre
         Cliente nuevoCliente = clienteService.crearCliente(clienteEntidad);
-
         return new ResponseEntity<>(nuevoCliente, HttpStatus.CREATED);
     }
 
-    // Método PUT para actualizar cliente
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar datos de un cliente existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cliente actualizado con éxito"),
+            @ApiResponse(responseCode = "400", description = "Datos de actualización inválidos"),
+            @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
+    })
     public ResponseEntity<Cliente> actualizar(@PathVariable Long id, @Valid @RequestBody ClienteDTO clienteDTO) {
-        try{
-            //Se verifica si el cliente ya existe
-            Cliente clienteExistente = clienteService.obtenerPorId(id);
+        Cliente clienteExistente = clienteService.obtenerPorId(id);
 
-            // Se reemplazan los datos con los nuevos
-            clienteExistente.setNombre(clienteDTO.getNombre());
-            clienteExistente.setApellido(clienteDTO.getApellido());
-            clienteExistente.setEmail(clienteDTO.getEmail());
-            clienteExistente.setTelefono(clienteDTO.getTelefono());
+        clienteExistente.setNombre(clienteDTO.getNombre());
+        clienteExistente.setApellido(clienteDTO.getApellido());
+        clienteExistente.setEmail(clienteDTO.getEmail());
+        clienteExistente.setTelefono(clienteDTO.getTelefono());
 
-            //Se guardan los cambios usando el service
-            Cliente clienteActualizado = clienteService.crearCliente(clienteExistente);
-            return ResponseEntity.ok(clienteActualizado); //Devuelve si está bien
-
-
-        } catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Tira un error si no existía
-        }
+        Cliente clienteActualizado = clienteService.crearCliente(clienteExistente);
+        return ResponseEntity.ok(clienteActualizado);
     }
 
-    //Método de eliminar un cliente
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id){
-        try{
-            //Verifica si existe antes de borrarlo
-            clienteService.obtenerPorId(id);
-
-            //Se llama al service para eliminarlo
-            clienteService.eliminarPorId(id);
-
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    @Operation(summary = "Eliminar un cliente por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Cliente eliminado de forma física exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
+    })
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        clienteService.obtenerPorId(id);
+        clienteService.eliminarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 }
