@@ -24,6 +24,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 * **Gestión de Identidad:** Registro, actualización y consulta de clientes.
 * **Validaciones Robustas:** Email con formato válido y único; Teléfono con formato obligatorio chileno (`+569XXXXXXXX`).
 * **Auditoría:** Registro automático de la fecha de creación mediante ganchos del ciclo de vida de JPA.
+* **Link del swagger:** http://localhost:8084/swagger-ui/index.html.
 
 ### 3. Microservicio de Menú (`menu-app` | Port: 8085)
 * **Administración de Carta:** Gestión de platos, descripciones y categorías (Entrada, Fondo, Postre, Bebestible).
