@@ -26,4 +26,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
     }
+
+    // Captura cuando el Service lanza un "RuntimeException" (ID no encontrado)
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage()); // Guarda el mensaje: cliente no encontrado
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND); // Devuelve 404 NOT FOUND
+    }
 }
