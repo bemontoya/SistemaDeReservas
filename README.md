@@ -49,6 +49,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 
 ### 8. Microservicio de Inventario (`inventario-app` | Port: 8087)
 * Control físico de materias primas e insumos de cocina para asegurar la cadena de suministro interna.
+* **Link del swagger:** http://localhost:8087/swagger-ui.html
 
 ### 9. Microservicio de Notificaciones (`notificacion-app` | Port: 8088)
 * Servicio encargado del flujo de alertas y confirmaciones hacia clientes y personal.
