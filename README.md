@@ -24,7 +24,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 * **Gestión de Identidad:** Registro, actualización y consulta de clientes.
 * **Validaciones Robustas:** Email con formato válido y único; Teléfono con formato obligatorio chileno (`+569XXXXXXXX`).
 * **Auditoría:** Registro automático de la fecha de creación mediante ganchos del ciclo de vida de JPA.
-* **Link del swagger:** http://localhost:8084/swagger-ui/index.html.
+* **Link del swagger:** http://localhost:8084/swagger-ui.html
 
 ### 3. Microservicio de Menú (`menu-app` | Port: 8085)
 * **Administración de Carta:** Gestión de platos, descripciones y categorías (Entrada, Fondo, Postre, Bebestible).
@@ -45,6 +45,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 
 ### 7. Microservicio de Empleados (`empleados-app` | Port: 8086)
 * Gestión del personal del restaurante (garzones, cocineros, administradores) y asignación de roles.
+* **Link del swagger:** http://localhost:8086/swagger-ui.html
 
 ### 8. Microservicio de Inventario (`inventario-app` | Port: 8087)
 * Control físico de materias primas e insumos de cocina para asegurar la cadena de suministro interna.
