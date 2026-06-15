@@ -1,7 +1,6 @@
 package Sistema.Reservas.inventario.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Entity
@@ -13,17 +12,15 @@ public class Inventario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El nombre del ingrediente/insumo es obligatorio")
+    @Column(name = "nombre_ingrediente", nullable = false)
     private String nombreIngrediente;
 
-    @NotNull(message = "La cantidad es obligatoria")
-    @Min(value = 0, message = "La cantidad no puede ser negativa")
+    @Column(name = "cantidad_actual", nullable = false)
     private Integer cantidadActual;
 
-    @NotNull(message = "El stock mínimo es obligatorio")
-    @Min(value = 0, message = "El stock mínimo no puede ser negativo")
-    private Integer stockMinimo; // Si la cantidad baja de este número, hay que reabastecer
+    @Column(name = "stock_minimo", nullable = false)
+    private Integer stockMinimo;
 
-    @NotBlank(message = "La unidad de medida es obligatoria (Ej: Kg, Litros, Unidades)")
+    @Column(name = "unidad_medida", nullable = false)
     private String unidadMedida;
 }

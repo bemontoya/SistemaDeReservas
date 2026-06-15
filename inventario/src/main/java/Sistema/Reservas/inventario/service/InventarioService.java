@@ -20,15 +20,29 @@ public class InventarioService {
         return inventarioRepository.findAll();
     }
 
+    public Inventario obtenerPorId(Long id) {
+        log.info("Buscando insumo con ID: {}", id);
+        return inventarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Insumo no encontrado con el ID: " + id));
+    }
+
     public Inventario crearInsumo(Inventario inventario) {
         log.info("Registrando nuevo insumo en bodega: {}", inventario.getNombreIngrediente());
         return inventarioRepository.save(inventario);
     }
 
-    // Lógica para descontar stock cuando se vende un plato
+    public Inventario actualizarInsumo(Inventario insumo) {
+        log.info("Actualizando insumo ID: {}", insumo.getId());
+        return inventarioRepository.save(insumo);
+    }
+
+    public void eliminarPorId(Long id) {
+        log.warn("Eliminando permanentemente el insumo con ID: {}", id);
+        inventarioRepository.deleteById(id);
+    }
+
     public Inventario descontarStock(Long id, Integer cantidadARestar) {
-        Inventario insumo = inventarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Insumo no encontrado"));
+        Inventario insumo = obtenerPorId(id);
 
         if (insumo.getCantidadActual() < cantidadARestar) {
             log.error("No hay suficiente stock de {}. Requerido: {}, Disponible: {}",
@@ -39,7 +53,6 @@ public class InventarioService {
         insumo.setCantidadActual(insumo.getCantidadActual() - cantidadARestar);
         log.info("Stock descontado para {}. Nuevo stock: {}", insumo.getNombreIngrediente(), insumo.getCantidadActual());
 
-        // Alerta si quedó crítico
         if (insumo.getCantidadActual() <= insumo.getStockMinimo()) {
             log.warn("El insumo {} ha alcanzado niveles críticos", insumo.getNombreIngrediente());
         }
@@ -47,7 +60,6 @@ public class InventarioService {
         return inventarioRepository.save(insumo);
     }
 
-    // Obtener la lista de lo que se está acabando
     public List<Inventario> obtenerCriticos() {
         log.info("Buscando insumos bajo el stock mínimo");
         return inventarioRepository.findInsumosCriticos();
