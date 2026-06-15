@@ -3,8 +3,10 @@ package Sistema.Reservas.empleado.dto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
-@Data // Lombok genera Getters y Setters automáticamente
+@Data
 public class EmpleadoDTO {
+
+    private Long id;
 
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;

@@ -41,4 +41,17 @@ public class EmpleadoService {
                         }
                 );
     }
+
+    // Método para actualizar empleado
+    public Empleado actualizarEmpleado(Empleado empleado) {
+        log.info("Actualizando datos del empleado ID: {} ({} {})",
+                empleado.getId(), empleado.getNombre(), empleado.getApellido());
+        return empleadoRepository.save(empleado); // Hace el UPDATE de forma segura
+    }
+
+    //Método para eliminar un empleado
+    public void eliminarPorId(Long id){
+        log.warn("Eliminando empleado con ID: {}", id);
+        empleadoRepository.deleteById(id);
+    }
 }

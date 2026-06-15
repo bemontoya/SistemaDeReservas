@@ -1,4 +1,4 @@
-package Sistema.Reservas.empleado.exception; // <-- Asegúrate de que coincida con tu paquete de empleado
+package Sistema.Reservas.empleado.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errores = new HashMap<>();
@@ -24,5 +25,14 @@ public class GlobalExceptionHandler {
         });
 
         return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
+    }
+
+    // Manejador para cuando un empleado no existe
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }
