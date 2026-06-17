@@ -26,6 +26,7 @@ public class MenuService {
     }
 
     public Menu obtenerPorId(Long id) {
+        log.info("Buscando plato por ID: {}", id);
         return menuRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("Plato con ID {} no encontrado", id);
@@ -36,5 +37,17 @@ public class MenuService {
     public List<Menu> obtenerPorCategoria(String categoria) {
         log.info("Buscando platos de la categoría: {}", categoria);
         return menuRepository.findByCategoria(categoria);
+    }
+
+    // Método para actualizar un plato existente
+    public Menu actualizarPlato(Menu menu) {
+        log.info("Actualizando datos del plato ID [{}]: {}", menu.getId(), menu.getNombre());
+        return menuRepository.save(menu); // save() hace un update automáticamente si la entidad ya tiene un ID existente
+    }
+
+    // Método para eliminar un plato por ID
+    public void eliminarPorId(Long id) {
+        log.info("Eliminando permanentemente el plato con ID: {}", id);
+        menuRepository.deleteById(id);
     }
 }

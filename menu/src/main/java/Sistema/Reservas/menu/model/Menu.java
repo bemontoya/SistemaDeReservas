@@ -26,5 +26,6 @@ public class Menu {
     @NotBlank(message = "La categoría es obligatoria (Ej: Entrada, Fondo, Postre)")
     private String categoria;
 
-    private boolean disponible = true; // Por defecto el plato está disponible
+
+    private Boolean disponible = true;
 }
