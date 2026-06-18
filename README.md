@@ -30,6 +30,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 * **Administración de Carta:** Gestión de platos, descripciones y categorías (Entrada, Fondo, Postre, Bebestible).
 * **Precisión Financiera:** Uso estricto de `BigDecimal` para el manejo de precios, evitando errores de redondeo nativos de tipos flotantes.
 * **Disponibilidad:** Control de stock y disponibilidad de productos en tiempo real.
+* **Link del swagger:** http://localhost:8085/swagger-ui.html
 
 ### 4. Microservicio de Pedidos (`pedido-app` | Port: 8082)
 * **Gestión de Órdenes:** Vinculación lógica de consumos y comandas asociados al ID de los clientes y mesas.
