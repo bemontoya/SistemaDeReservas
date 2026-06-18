@@ -25,4 +25,16 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
     }
+
+    // Captura un error cuando la notificación no existe por su ID
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        // Si el mensaje advierte que no existe, se envia un 404, de lo contrario dará un 400
+        HttpStatus status = ex.getMessage().toLowerCase().contains("no existe")
+                ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
+        return new ResponseEntity<>(error, status);
+    }
 }

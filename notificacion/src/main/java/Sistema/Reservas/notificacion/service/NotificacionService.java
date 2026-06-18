@@ -21,15 +21,19 @@ public class NotificacionService {
         return notificacionRepository.findAll();
     }
 
-    // "Enviar" y guardar la notificación
+    // Buscar notificaciones por el correo del destinatario
+    public List<Notificacion> obtenerPorDestinatario(String destinatario) {
+        log.info("Filtrando notificaciones enviadas a: {}", destinatario);
+        return notificacionRepository.findByDestinatario(destinatario);
+    }
+
+    // Enviar y guardar la notificación
     public Notificacion enviarNotificacion(Notificacion notificacion) {
-        // Simulamos la lógica de envío
         log.info("ENVIANDO {} A {}: {}",
                 notificacion.getTipo(),
                 notificacion.getDestinatario(),
                 notificacion.getMensaje());
 
-        // Guardamos el registro en la base de datos
         return notificacionRepository.save(notificacion);
     }
 }

@@ -15,19 +15,14 @@ public class Notificacion {
     private Long id;
 
     @NotBlank(message = "El destinatario es obligatorio (Email o ID)")
-    private String destinatario; //Puede ser el email del cliente
+    private String destinatario;
 
     @NotBlank(message = "El mensaje no puede estar vacío")
     private String mensaje;
 
-    @NotBlank(message = "El tipo de notificación es obligatoio (Pedido, Pago, etc)")
+    @NotBlank(message = "El tipo de notificación es obligatorio")
     private String tipo;
 
-    @Column(updatable = false)
+    @Column(insertable = false, updatable = false)
     private LocalDateTime fechaEnvio;
-
-    @PrePersist
-    protected void onCreate() {
-        this.fechaEnvio = LocalDateTime.now();
-    }
 }
