@@ -25,4 +25,17 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleRuntimeExceptions(RuntimeException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+
+        // Si el mensaje dice "no encontrado", respondemos con 404, si no, con 400 Bad Request
+        HttpStatus status = ex.getMessage().toLowerCase().contains("no encontrado")
+                ? HttpStatus.NOT_FOUND
+                : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(errorResponse, status);
+    }
 }

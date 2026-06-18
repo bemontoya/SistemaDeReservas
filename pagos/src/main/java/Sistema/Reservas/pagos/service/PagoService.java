@@ -21,7 +21,7 @@ public class PagoService {
     }
 
     public Pago procesarPago(Pago pago){
-        if (pagoRepository.existsById(pago.getPedidoId())){
+        if (pagoRepository.existsByPedidoId(pago.getPedidoId())){
             log.error("Intento de pago duplicado para el Pedido ID: {}", pago.getPedidoId());
             throw new RuntimeException("Este pedido ya ha sido pagado anteriormente");
         }
@@ -34,7 +34,7 @@ public class PagoService {
         return pagoRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("Pago con ID {} no encontrado", id);
-                    return new RuntimeException("Pago no encotrado");
+                    return new RuntimeException("Pago no encontrado"); // Corregido typo
                 });
     }
 }
