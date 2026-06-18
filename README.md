@@ -55,9 +55,11 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 
 ### 9. Microservicio de Notificaciones (`notificacion-app` | Port: 8088)
 * Servicio encargado del flujo de alertas y confirmaciones hacia clientes y personal.
+* **Linnk del swagger:** http://localhost:8088/swagger-ui/index.html
 
 ### 10. Microservicio de Pagos (`pagos-app` | Port: 8089)
 * Procesamiento del cierre de cuentas, boletas y pasarelas de pago.
+* **Link del swagger:** http://localhost:8089/swagger-ui/index.html
 
 ### 11. Microservicio de Reportes (`reportes-app` | Port: 8090)
 * Generación de informes analíticos de rendimiento con persistencia de texto enriquecido o JSON estructurado en columnas de tipo `TEXT`.
