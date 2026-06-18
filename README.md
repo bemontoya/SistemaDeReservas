@@ -43,6 +43,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 
 ### 6. Microservicio de Mesas (`mesa-app` | Port: 8083)
 * Control de distribución física del restaurante, capacidades de asientos y estados de ocupación.
+* **Link del swagger:** http://localhost:8083/swagger-ui.html
 
 ### 7. Microservicio de Empleados (`empleados-app` | Port: 8086)
 * Gestión del personal del restaurante (garzones, cocineros, administradores) y asignación de roles.
