@@ -44,4 +44,27 @@ public class MesaService {
         mesa.setEstado(nuevoEstado.toUpperCase());
         return mesaRepository.save(mesa);
     }
+
+
+    public Mesa actualizarMesa(Long id, Mesa mesaModificada) {
+        Mesa mesaExistente = mesaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("La mesa no existe con el ID: " + id));
+
+        log.info("Actualizando datos de la mesa N° {}. Nueva capacidad: {} asientos.",
+                mesaModificada.getNumeroMesa(), mesaModificada.getCapacidad());
+
+        mesaExistente.setNumeroMesa(mesaModificada.getNumeroMesa());
+        mesaExistente.setCapacidad(mesaModificada.getCapacidad());
+
+        return mesaRepository.save(mesaExistente);
+    }
+
+    // Método para eliminar mesa por su ID
+    public void eliminarMesa(Long id) {
+        Mesa mesa = mesaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("La mesa no existe con el ID: " + id));
+
+        log.warn("Eliminando del sistema la mesa N° {} de forma permanente", mesa.getNumeroMesa());
+        mesaRepository.deleteById(id);
+    }
 }

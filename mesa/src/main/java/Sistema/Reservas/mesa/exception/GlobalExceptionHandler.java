@@ -13,6 +13,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Captura errores de validación de los DTOs (@Valid)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errores = new HashMap<>();
@@ -24,5 +25,19 @@ public class GlobalExceptionHandler {
         });
 
         return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
+    }
+
+    // Captura errores de lógica de negocio (Por ejemplo: Mesa no encontrada, número duplicado)
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        // Si el mensaje dice "no existe" o "no encontrada", se manda un 404, si no, 400
+        HttpStatus status = ex.getMessage().toLowerCase().contains("no existe") ||
+                ex.getMessage().toLowerCase().contains("not found")
+                ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(error, status);
     }
 }

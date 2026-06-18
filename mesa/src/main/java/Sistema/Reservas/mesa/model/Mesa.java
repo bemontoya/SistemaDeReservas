@@ -22,5 +22,5 @@ public class Mesa {
     private Integer capacidad;
 
     @NotBlank(message = "El estado es obligatorio (LIBRE, OCUPADA, RESERVADA)")
-    private String estado = "LIBRE"; // Por defecto, toda mesa nueva empieza LIBRE
+    private String estado = "LIBRE"; // Por defecto toda mesa nueva empieza LIBRE
 }
