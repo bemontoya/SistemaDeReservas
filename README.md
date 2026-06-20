@@ -35,6 +35,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 ### 4. Microservicio de Pedidos (`pedido-app` | Port: 8082)
 * **Gestión de Órdenes:** Vinculación lógica de consumos y comandas asociados al ID de los clientes y mesas.
 * **Historial:** Trazabilidad completa de transacciones y estados del pedido.
+* **Link del swagger:** http://localhost:8082/swagger-ui.html
 
 ### 5. Microservicio de Reserva (`reserva-app` | Port: 8081)
 * **Control de Agendamiento:** Gestión de reservas vinculando `clienteId` y `mesaId`.
