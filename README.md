@@ -104,9 +104,15 @@ Password: C4dpeafg**
 Abra una terminal (se recomienda PowerShell en Windows o Bash en Linux/macOS) en la **raíz principal del proyecto** y ejecute la siguiente secuencia de comandos:
 
 ```powershell
-# 1. Limpiar construcciones anteriores y empaquetar todos los microservicios distribuidos en archivos .jar limpios
+# 1. Apaga los contenedores activos, remueve las redes y destruye los volúmenes de datos previos
+docker compose down -v
+
+# 2. Limpiar el target y empaquetar todos los microservicios en simultáneo
 .\mvnw clean package -DskipTests
 
-# 2. Construir las imágenes optimizadas de Docker y levantar los 10 contenedores en segundo plano
-docker compose up --build -d
+# 3. Construir e iniciar todo el ecosistema de microservicios
+docker compose up -d --build
+
+# 4. Listar todos los contenedores del proyecto y sus puertos asignados
+docker compose ps
 
