@@ -41,6 +41,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 * **Control de Agendamiento:** Gestión de reservas vinculando `clienteId` y `mesaId`.
 * **Validaciones temporales:** Uso de `@Future` para asegurar que las fechas de reserva pertenezcan estrictamente al futuro.
 * **Estados Automatizados:** Lógica `@PrePersist` para inicializar las reservas en estado `"CONFIRMADA"` por defecto si no se especifica otro.
+* **Link del swagger:** http://localhost:8081/swagger-ui.html
 
 ### 6. Microservicio de Mesas (`mesa-app` | Port: 8083)
 * Control de distribución física del restaurante, capacidades de asientos y estados de ocupación.
@@ -64,6 +65,7 @@ El sistema está compuesto por **10 contenedores en ejecución** intercomunicado
 
 ### 11. Microservicio de Reportes (`reportes-app` | Port: 8090)
 * Generación de informes analíticos de rendimiento con persistencia de texto enriquecido o JSON estructurado en columnas de tipo `TEXT`.
+* **Link del swagger:** http://localhost:8090/swagger-ui.html
 
 ---
 
