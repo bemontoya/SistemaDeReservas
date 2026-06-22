@@ -113,9 +113,9 @@ docker compose down -v
 # 3. Construir e iniciar todo el ecosistema de microservicios
 docker compose up -d --build
 
-# Opcional: Ejecutar los test
-./mvnw clean test verify
-
 # 4. Listar todos los contenedores del proyecto y sus puertos asignados
 docker compose ps
+
+# Opcional: Ejecutar los test
+./mvnw clean test verify
 
