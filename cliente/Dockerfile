@@ -2,20 +2,21 @@
 FROM maven:3.8.8-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copiar el archivo pom.xml y descargar las dependencias
+# 1. Copiar el POM padre desde la raíz del proyecto para que Maven resuelva la herencia
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
 
-# Copiar el código fuente y compilar el proyecto saltando los tests
-COPY src ./src
-RUN mvn clean package -DskipTests
+# 2. Copiar el subproyecto 'cliente' completo
+COPY cliente ./cliente
+
+# 3. Compilar específicamente el módulo de clientes usando el POM padre
+RUN mvn clean package -pl cliente -am -DskipTests
 
 # Etapa 2: Imagen de ejecución ligera
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Copiar el JAR generado desde la etapa de compilación
-COPY --from=build /app/target/cliente-0.0.1-SNAPSHOT.jar app.jar
+# Copiar el JAR generado dentro del módulo de clientes
+COPY --from=build /app/cliente/target/cliente-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8084
 ENTRYPOINT ["java", "-jar", "app.jar"]
