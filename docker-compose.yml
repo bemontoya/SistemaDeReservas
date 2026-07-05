@@ -236,6 +236,28 @@ services:
     networks:
       - restaurante-network
 
+  # === NUEVO SERVICIO CENTRALIZADO (API GATEWAY) ===
+  api-gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: api_gateway
+    ports:
+      - "8080:8080"  # El único puerto expuesto al exterior para recibir peticiones
+    networks:
+      - restaurante-network
+    depends_on:
+      - reserva-app
+      - pedido-app
+      - mesa-app
+      - clientes-app
+      - menu-app
+      - empleados-app
+      - inventario-app
+      - notificacion-app
+      - pagos-app
+      - reportes-app
+
 networks:
   restaurante-network:
     driver: bridge

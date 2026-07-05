@@ -1,0 +1,59 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: cliente-service
+          uri: http://clientes-app:8084
+          predicates:
+            - Path=/api/clientes/**
+
+        - id: empleado-service
+          uri: http://empleados-app:8086
+          predicates:
+            - Path=/api/empleados/**
+
+        - id: inventario-service
+          uri: http://inventario-app:8087
+          predicates:
+            - Path=/api/empleados/**
+
+        - id: menu-service
+          uri: http://menu-app:8085
+          predicates:
+              - Path=/api/menu/**
+
+        - id: mesa-service
+          uri: http://mesa-app:8083
+          predicates:
+              - Path=/api/mesas/**
+
+        - id: notificacion-service
+          uri: http://notificacion-app:8088
+          predicates:
+              - Path=/api/notificaciones/**
+
+        - id: pagos-service
+          uri: http://pagos-app:8089
+          predicates:
+              - Path=/api/pagos/**
+
+        - id: pedido-service
+          uri: http://pedido-app:8082
+          predicates:
+              - Path=/api/pedidos/**
+
+        - id: reportes-service
+          uri: http://reportes-app:8090
+          predicates:
+              - Path=/api/reportes/**
+
+        - id: reserva-service
+          uri: http://reserva-app:8081
+          predicates:
+              - Path=/api/reservas/**
+
+
+
