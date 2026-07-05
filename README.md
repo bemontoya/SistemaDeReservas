@@ -103,19 +103,17 @@ Password: C4dpeafg**
 
 Abra una terminal (se recomienda PowerShell en Windows o Bash en Linux/macOS) en la **raíz principal del proyecto** y ejecute la siguiente secuencia de comandos:
 
-```powershell
-# 1. Apaga los contenedores activos, remueve las redes y destruye los volúmenes de datos previos
+Despliegue del Sistema
+Abra una terminal en la raíz principal del proyecto y ejecute la siguiente secuencia de comandos:
+```bash
+# 1. Apagar contenedores activos, remover redes y destruir volúmenes de datos previos
 docker compose down -v
 
-# 2. Limpiar el target y empaquetar todos los microservicios en simultáneo
-.\mvnw clean package -DskipTests
+# 2. Limpiar compilaciones previas y empaquetar todos los microservicios en simultáneo
+./mvnw clean package -DskipTests
 
-# 3. Construir e iniciar todo el ecosistema de microservicios
+# 3. Construir las imágenes e iniciar todo el ecosistema de microservicios en segundo plano
 docker compose up -d --build
 
-# 4. Listar todos los contenedores del proyecto y sus puertos asignados
+# 4. Listar todos los contenedores del proyecto y verificar sus puertos asignados
 docker compose ps
-
-# Opcional: Ejecutar los test
-./mvnw clean test verify
-
