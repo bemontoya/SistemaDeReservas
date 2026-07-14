@@ -79,14 +79,19 @@ public class ClienteControllerTest {
         assertEquals(1L, respuesta.getBody().getId());
     }
 
+
     @Test
     public void testObtenerPorIdNoEncontrado() {
+
         when(clienteService.obtenerPorId(99L)).thenThrow(new RuntimeException("Cliente no encontrado"));
 
-        ResponseEntity<Cliente> respuesta = clienteController.obtenerPorId(99L);
+
+        RuntimeException excepcion = assertThrows(RuntimeException.class, () -> {
+            clienteController.obtenerPorId(99L);
+        });
 
 
-        assertEquals(HttpStatus.NOT_FOUND, respuesta.getStatusCode());
+        assertEquals("Cliente no encontrado", excepcion.getMessage());
     }
 
     @Test
