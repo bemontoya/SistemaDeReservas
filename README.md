@@ -117,3 +117,6 @@ docker compose up -d --build
 
 # 4. Listar todos los contenedores del proyecto y verificar sus puertos asignados
 docker compose ps
+
+# Opcional: Ejecucion test
+./mvnw clean test verify
